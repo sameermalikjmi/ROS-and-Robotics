@@ -1,0 +1,29 @@
+<launch>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+    <!-- Spawn a robot into Gazebo -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find final_project)/urdf/rrpbot.xacro"/>
+    
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model rrpbot" />
+    
+	<arg name="gui" default="true" />
+    
+    <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+	<node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find final_project)/rviz/foundproject.rviz"/>
+    
+    <rosparam command="load"
+    		file = "$(find urdf_sim_tutorial)/config/joints.yaml"
+    		ns="rrp_joint_state_controller" />
+    
+    <node name="rrp_controller_spawner" pkg="controller_manager" type="spawner"
+      args="rrp_joint_state_controller" />
+      
+    <!-- node name="fksolver" pkg="final_project" type="fksolver.py" /       -->
+
+    
+
+</launch>

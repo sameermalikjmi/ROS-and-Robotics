@@ -1,0 +1,2 @@
+final_project
+-DCATKIN_DEVEL_PREFIX=/home/wael/found_ws/devel -DCMAKE_INSTALL_PREFIX=/home/wael/found_ws/install -G Unix Makefiles
